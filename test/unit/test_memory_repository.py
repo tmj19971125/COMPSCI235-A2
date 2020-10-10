@@ -1,4 +1,3 @@
-from datetime import date, datetime
 from typing import List
 
 import pytest
@@ -24,21 +23,21 @@ def test_repository_does_not_retrieve_a_non_existent_user(in_memory_repo):
     assert user is None
 
 
-def test_repository_can_retrieve_article_count(in_memory_repo):
+def test_repository_can_retrieve_movie_count(in_memory_repo):
     number_of_articles = in_memory_repo.get_number_of_movies()
 
     # Check that the query returned 5 Articles.
     assert number_of_articles == 5
 
 
-def test_repository_can_add_article(in_memory_repo):
+def test_repository_can_add_movie(in_memory_repo):
     movie = Movie(name='The Great Wall',year1=2016,rank=6)
     in_memory_repo.add_movie(movie)
 
     assert in_memory_repo.get_movie(6) is movie
 
 
-def test_repository_can_retrieve_article(in_memory_repo):
+def test_repository_can_retrieve_movie(in_memory_repo):
     movie = in_memory_repo.get_movie(1)
 
     # Check that the Article has the expected title.
@@ -64,7 +63,7 @@ def test_repository_can_retrieve_article(in_memory_repo):
 
 
 
-def test_repository_does_not_retrieve_a_non_existent_article(in_memory_repo):
+def test_repository_does_not_retrieve_a_non_existent_movie(in_memory_repo):
     movie = in_memory_repo.get_movie(101)
     assert movie is None
 
@@ -81,7 +80,7 @@ def test_repository_does_not_retrieve_a_non_existent_article(in_memory_repo):
 #     assert len(articles) == 0
 #
 #
-def test_repository_can_retrieve_tags(in_memory_repo):
+def test_repository_can_retrieve_genres(in_memory_repo):
     genres: List[Genre] = in_memory_repo.get_genres()
 
     assert len(genres) == 10
@@ -107,7 +106,7 @@ def test_repository_can_retrieve_tags(in_memory_repo):
 #     assert article.title == 'Coronavirus: Death confirmed as six more test positive in NSW'
 #
 #
-def test_repository_can_get_articles_by_ids(in_memory_repo):
+def test_repository_can_get_movies_by_ranks(in_memory_repo):
     movies = in_memory_repo.get_movies_by_rank([2, 5])
 
     assert len(movies) == 2
@@ -116,26 +115,26 @@ def test_repository_can_get_articles_by_ids(in_memory_repo):
 
 
 
-def test_repository_does_not_retrieve_article_for_non_existent_id(in_memory_repo):
+def test_repository_does_not_retrieve_movie_for_non_existent_rank(in_memory_repo):
     movies = in_memory_repo.get_movies_by_rank([2, 9])
 
     assert len(movies) == 1
     assert movies[0].title == 'Prometheus'
 
 
-def test_repository_returns_an_empty_list_for_non_existent_ids(in_memory_repo):
+def test_repository_returns_an_empty_list_for_non_existent_ranks(in_memory_repo):
     movies = in_memory_repo.get_movies_by_rank([0, 9])
 
     assert len(movies) == 0
 
 
-def test_repository_returns_article_ids_for_existing_tag(in_memory_repo):
+def test_repository_returns_movie_ranks_for_existing_genre(in_memory_repo):
     movie_ranks = in_memory_repo.get_movie_ranks_for_genre('Action')
 
     assert movie_ranks == [1,5]
 
 
-def test_repository_returns_an_empty_list_for_non_existent_tag(in_memory_repo):
+def test_repository_returns_an_empty_list_for_non_existent_genre(in_memory_repo):
     movie_ranks = in_memory_repo.get_movie_ranks_for_genre('Loving')
 
     assert len(movie_ranks) == 0
@@ -169,14 +168,14 @@ def test_repository_returns_an_empty_list_for_non_existent_tag(in_memory_repo):
 #     assert next_date is None
 #
 #
-def test_repository_can_add_a_tag(in_memory_repo):
+def test_repository_can_add_a_genre(in_memory_repo):
     genre = Genre('Loving')
     in_memory_repo.add_genre(genre)
 
     assert genre in in_memory_repo.get_genres()
 
 
-def test_repository_can_add_a_comment(in_memory_repo):
+def test_repository_can_add_a_review(in_memory_repo):
     user = in_memory_repo.get_user('thorke')
     movie = in_memory_repo.get_movie(2)
     review = make_review("Trump's onto it!", user, movie,4)
@@ -186,7 +185,7 @@ def test_repository_can_add_a_comment(in_memory_repo):
     assert review in in_memory_repo.get_reviews()
 
 
-def test_repository_does_not_add_a_comment_without_a_user(in_memory_repo):
+def test_repository_does_not_add_a_review_without_a_user(in_memory_repo):
     movie = in_memory_repo.get_movie(2)
     review = Review(None, movie, "Trump's onto it!", 5)
 
@@ -194,7 +193,7 @@ def test_repository_does_not_add_a_comment_without_a_user(in_memory_repo):
         in_memory_repo.add_review(review)
 
 
-def test_repository_does_not_add_a_comment_without_an_article_properly_attached(in_memory_repo):
+def test_repository_does_not_add_a_review_without_an_movie_properly_attached(in_memory_repo):
     user = in_memory_repo.get_user('thorke')
     movie = in_memory_repo.get_movie(2)
     review = Review(user,movie,"Trump's onto it!",5)
@@ -206,7 +205,7 @@ def test_repository_does_not_add_a_comment_without_an_article_properly_attached(
         in_memory_repo.add_review(review)
 
 
-def test_repository_can_retrieve_comments(in_memory_repo):
+def test_repository_can_retrieve_reviews(in_memory_repo):
     assert len(in_memory_repo.get_reviews()) == 2
 
 
